@@ -1,4 +1,4 @@
-package lesson2.phone_directory;
+package lesson2.day1.phone_directory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,4 @@
-package lesson2.arraylist_impl;
-
-import java.util.Arrays;
+package lesson2.day1.arraylist_impl;
 
 public class MyArrayList<E> {
     private E[] elements;
