@@ -1,8 +1,11 @@
 package lesson2.day3.doublylinkedlist;
 
-public class DoublyLinkedList<E> {
+import java.util.Iterator;
+
+public class DoublyLinkedList<E>{
+
     private class Node{
-        private final E data;
+        private E data;
         private Node prev;
         private Node next;
 
@@ -118,8 +121,6 @@ public class DoublyLinkedList<E> {
         }
     }
 
-
-
     public E remove(int index) {
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
@@ -136,7 +137,6 @@ public class DoublyLinkedList<E> {
             for (int i = 0; i < index; i++) {
                 current = current.next;
             }
-            System.out.println( "Removing: " + current.data);
             E data = current.data;
             current.prev.next = current.next;
             current.next.prev = current.prev;
@@ -145,6 +145,44 @@ public class DoublyLinkedList<E> {
             size--;
             return data;
         }
+    }
+
+    public E set(int index, E element) {
+        validateIndex(index);
+//        if (index < 0 || index >= size()) {
+//            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+//        }
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        E oldElement = current.data;
+        current.data = element;
+        return oldElement;
+    }
+
+    private void validateIndex(int index) {
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+        }
+    }
+
+    /**
+     * Returns the element at the specified position in this list.
+     * @param index index of the element to return
+     * @return the element at the specified position in this list
+     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size())
+     */
+    public E get(int index) {
+        validateIndex(index);
+//        if (index < 0 || index >= size()) {
+//            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+//        }
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.data;
     }
 }
 
@@ -172,7 +210,12 @@ class Main {
         list.displayForward();
         list.displayBackward();
         System.out.println(list.remove(1));
+        System.out.println("Displaying forward: ");
         list.displayForward();
+        System.out.println("Displaying backward: ");
         list.displayBackward();
+        System.out.println("Element at index 0: " + list.get(0));
+        System.out.println("Element at index 1: " + list.get(1));
+        System.out.println("Element at last index: " + list.get(list.size() - 1));
     }
 }
