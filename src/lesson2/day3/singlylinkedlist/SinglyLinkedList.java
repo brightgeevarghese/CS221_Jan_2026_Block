@@ -1,9 +1,31 @@
 package lesson2.day3.singlylinkedlist;
 
-public class SinglyLinkedList<E> {
+import java.util.Iterator;
+
+public class SinglyLinkedList<E> implements Iterable<E>{
 
     private Node head;
     private int size;
+
+    @Override
+    public Iterator<E> iterator() {
+        return new SLLIterator();//return an Iterator object
+    }
+    private class SLLIterator implements Iterator<E> {
+
+        private Node current = head;
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public E next() {
+            E currentData = current.data;
+            current = current.next;
+            return currentData;
+        }
+    }
 
     private class Node{
         private final E data;
