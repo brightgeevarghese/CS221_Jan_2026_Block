@@ -30,12 +30,14 @@ public class SLQueue<E> extends AbstractQueue<E> implements Queue<E> {
 
         @Override
         public boolean hasNext() {
-            return false;
+            return current != null;
         }
 
         @Override
         public E next() {
-            return null;
+            E nextData = current.data;
+            current = current.next;
+            return nextData;
         }
     }
 
@@ -74,5 +76,21 @@ public class SLQueue<E> extends AbstractQueue<E> implements Queue<E> {
             return front.data;
         }
         return null;
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        SLQueue<Integer> slQueue = new SLQueue<>();
+        slQueue.offer(10);
+        slQueue.offer(8);
+        slQueue.offer(12);
+//        while (!slQueue.isEmpty()) {
+//            System.out.println(slQueue.poll());
+//        }
+        Iterator<Integer> iterator = slQueue.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
 }
