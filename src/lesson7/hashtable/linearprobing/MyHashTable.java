@@ -100,5 +100,6 @@ class Main {
         System.out.println(hashTable.get(10));
         System.out.println(hashTable.remove(11));
         System.out.println(hashTable);
+        System.out.println(hashTable.contains(11));//false(Already removed)
     }
 }
