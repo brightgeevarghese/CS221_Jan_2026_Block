@@ -18,16 +18,15 @@ public class MyHashTable {
         }
     }
     private Item[] table;
-    private int size;
+    private int size = 0;
     private Item nonItem = new Item(-1, null);
 
-    public MyHashTable(int size) {
-        this.table = new Item[size];
-        this.size = size;
+    public MyHashTable(int arraySize) {
+        this.table = new Item[arraySize];
     }
 
     private int hash(int key){
-        return key % size;
+        return key % table.length;
     }
     public void put(int key, String value){
         int index = hash(key);
