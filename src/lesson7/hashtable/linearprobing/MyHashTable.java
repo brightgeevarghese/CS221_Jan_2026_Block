@@ -1,5 +1,7 @@
 package lesson7.hashtable.linearprobing;
 
+import lesson7.hashtable.chaining.HashTableChaining;
+
 import java.util.Arrays;
 
 public class MyHashTable {
@@ -25,10 +27,30 @@ public class MyHashTable {
         this.table = new Item[arraySize];
     }
 
+    public static final double MAX_LOAD_FACTOR = 0.75;
+
     private int hash(int key){
         return key % table.length;
     }
+
+    private void rehash() {
+        Item[] oldTable = table;
+        table = new Item[2 * oldTable.length];
+        size = 0;
+        for (Item item : oldTable) {
+            if (item != null && item != nonItem) {
+                put(item.key, item.value);
+            }
+        }
+        System.out.println("Rehashing completed.");
+    }
+
     public void put(int key, String value){
+        double loadFactor = (double) size / table.length;
+        if (loadFactor > MAX_LOAD_FACTOR) {
+            System.out.println( "Rehashing for " + value);
+            rehash();
+        }
         int index = hash(key);
         while (table[index] != null && table[index] != nonItem){
             //If the key already existing
@@ -36,18 +58,19 @@ public class MyHashTable {
                 table[index].value = value;
                 return;
             }
-            index = (index + 1) % size;
+            index = (index + 1) % table.length;
         }
         table[index] = new Item(key, value);
+        size++;
     }
     public String get(int key){
         int index = hash(key);
         int startIndex = index;
-        while (table[index] != null && table[index] != nonItem){
-            if (table[index].key == key){
+        while (table[index] != null){
+            if (table[index] != nonItem && table[index].key == key){
                 return table[index].value;
             }
-            index = (index + 1) % size;
+            index = (index + 1) % table.length;
             if (index == startIndex){
                 break;//throw new NosuchElementException("No such element");
             }
@@ -58,13 +81,14 @@ public class MyHashTable {
     public String remove(int key){
         int index = hash(key);
         int startIndex = index;
-        while (table[index] != null && table[index] != nonItem){
-            if (table[index].key == key){
+        while (table[index] != null){
+            if (table[index] != nonItem && table[index].key == key){
                 String value = table[index].value;
                 table[index] = nonItem;
+                size--;
                 return value;
             }
-            index = (index + 1) % size;
+            index = (index + 1) % table.length;
             if (index == startIndex) {
                 break;//throw new NosuchElementException("No such element");
             }
@@ -94,11 +118,11 @@ class Main {
         hashTable.put(11, "B");
         hashTable.put(13, "C");
         hashTable.put(40, "D");
-//        hashTable.put(50, "E");
+        hashTable.put(50, "E");
         System.out.println(hashTable);
-        System.out.println(hashTable.get(10));
-        System.out.println(hashTable.remove(11));
-        System.out.println(hashTable);
-        System.out.println(hashTable.contains(11));//false(Already removed)
+//        System.out.println(hashTable.get(10));
+//        System.out.println(hashTable.remove(11));
+//        System.out.println(hashTable);
+//        System.out.println(hashTable.contains(11));//false(Already removed)
     }
 }
