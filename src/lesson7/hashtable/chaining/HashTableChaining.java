@@ -33,14 +33,32 @@ public class HashTableChaining {
     //table[0] -> first linked list => table[0] = first node of the linkedlist
     //table[1] -> second linked list
     int size;
-    public HashTableChaining(int size){
-        this.size = size;
-        table = new Node[size];
+    public static final double MAX_LOAD_FACTOR = 0.75;
+    public HashTableChaining(int initialCapacity){
+        table = new Node[initialCapacity];
     }
     private int hash(int key){
-        return key % size;
+        return key % table.length;
+    }
+    private void rehash() {
+        Node[] oldTable = table;
+        table = new Node[2 * oldTable.length];
+        size = 0;
+        for (Node row : oldTable) {
+            while (row != null) {
+                put(row.item.key, row.item.value);
+                row = row.next;
+            }
+        }
+        System.out.println("Rehashing completed.");
     }
     public void put(int key, String value){
+        double loadFactor = (double) size / table.length;
+        System.out.println( "Load factor: " + loadFactor);
+        if (loadFactor > MAX_LOAD_FACTOR) {
+            System.out.println( "Rehashing for " + value);
+            rehash();
+        }
         int index = hash(key);
         Node current = table[index];
         if (current == null){
@@ -59,6 +77,7 @@ public class HashTableChaining {
             newNode.next = table[index];//the new node's next points to the first node of the list
             table[index] = newNode;//make the new node as the first node of the list
         }
+        size++;
     }
     public String get(int key){
         int index = hash(key);
@@ -91,6 +110,7 @@ public class HashTableChaining {
                 } else {
                     previous.next = current.next;
                 }
+                size--;
                 return current.item.value;
             }
             previous = current;
@@ -114,17 +134,21 @@ class Main {
         HashTableChaining hashTableChaining = new HashTableChaining(5);
         hashTableChaining.put(10, "Apple");
         hashTableChaining.put(20, "Banana");
-        hashTableChaining.put(12, "Orange");//12 % 5 = 2
-        hashTableChaining.put(22, "Grapes");//22 % 5 = 2
+        hashTableChaining.put(12, "Orange");
+        hashTableChaining.put(22, "Grapes");
         hashTableChaining.put(15, "Mango");
+//        hashTableChaining.put(32, "Pineapple");
+//        hashTableChaining.put(26, "Strawberry");
+//        hashTableChaining.put(11, "Cherry");
+//        hashTableChaining.put(14, "Pear");
         System.out.println(hashTableChaining);
-        System.out.println(hashTableChaining.get(12) + " is found.");//Orange
-        if (hashTableChaining.contains(11)) {
-            System.out.println("11 is found.");
-        } else {
-            System.out.println("11 is not found.");
-        }
-        System.out.println("Removing 20: " + hashTableChaining.remove(20));
-        System.out.println(hashTableChaining);
+//        System.out.println(hashTableChaining.get(12) + " is found.");//Orange
+//        if (hashTableChaining.contains(11)) {
+//            System.out.println("11 is found.");
+//        } else {
+//            System.out.println("11 is not found.");
+//        }
+//        System.out.println("Removing 20: " + hashTableChaining.remove(20));
+//        System.out.println(hashTableChaining);
     }
 }
