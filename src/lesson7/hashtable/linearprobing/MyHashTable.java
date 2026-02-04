@@ -1,9 +1,5 @@
 package lesson7.hashtable.linearprobing;
 
-import lesson7.hashtable.chaining.HashTableChaining;
-
-import java.util.Arrays;
-
 public class MyHashTable {
     private class Item {
         private int key;
