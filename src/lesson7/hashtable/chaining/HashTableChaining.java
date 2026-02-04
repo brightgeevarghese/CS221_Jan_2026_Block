@@ -54,7 +54,6 @@ public class HashTableChaining {
     }
     public void put(int key, String value){
         double loadFactor = (double) size / table.length;
-        System.out.println( "Load factor: " + loadFactor);
         if (loadFactor > MAX_LOAD_FACTOR) {
             System.out.println( "Rehashing for " + value);
             rehash();
